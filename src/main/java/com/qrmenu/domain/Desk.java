@@ -13,7 +13,7 @@ public class Desk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private int id;
 
     private String label;
 
