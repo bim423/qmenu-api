@@ -15,7 +15,7 @@ public class SubMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String name;
+    private String category;
     private String description;
 
     @OneToMany(targetEntity = Product.class)
