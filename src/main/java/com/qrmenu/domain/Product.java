@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,6 +24,20 @@ public class Product {
     private String description;
 
     private double price;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private SubMenu subMenu;
+
+    @JsonIgnore
+    public SubMenu getSubMenu(){
+        return subMenu;
+    }
+
+    @JsonIgnore
+    public void setSubMenu(SubMenu subMenu){
+        this.subMenu = subMenu;
+    }
 
 
 }

@@ -18,6 +18,6 @@ public class SubMenu {
     private String category;
     private String description;
 
-    @OneToMany(targetEntity = Product.class)
+    @OneToMany(mappedBy = "subMenu", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Product> products;
 }

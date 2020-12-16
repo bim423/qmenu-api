@@ -1,5 +1,6 @@
 package com.qrmenu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,17 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int menuId;
 
-    @OneToMany
+    public Menu(int menuId, List<SubMenu> menu) {
+        this.menuId = menuId;
+        this.menu = menu;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<SubMenu> menu;
+
+    @JsonIgnore
+    public int getMenuId() {
+        return menuId;
+    }
+
 }

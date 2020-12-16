@@ -2,6 +2,8 @@ package com.qrmenu.api;
 
 import com.qrmenu.data.ProductRepository;
 import com.qrmenu.domain.Product;
+import com.qrmenu.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,28 +13,28 @@ import org.springframework.web.bind.annotation.*;
         produces="application/json")
 public class ProductApiController {
 
-    private ProductRepository repo;
+    @Autowired
+    private ProductService productService;
 
-    public ProductApiController(ProductRepository repo){this.repo = repo;}
-
-    @PostMapping(consumes = "application/json")
+    @PostMapping(consumes = "application/json", value = "/{submenuId}/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product postProduct(@RequestBody Product product){return repo.save(product);}
+    public Product postProduct(@PathVariable(value = "submenuId") Integer submenuId,
+                               @RequestBody Product product){
+        return productService.addProduct(submenuId, product);
+    }
 
     @PutMapping(consumes = "application/json")
-    public Product putProduct(@RequestBody Product product){return repo.save(product);}
+    public Product updateProduct(@RequestBody Product update){
+        return productService.updateProduct(update.getId(), update);
+    }
 
     @GetMapping(produces = "application/json")
-    public Iterable<Product> allProducts(){return repo.findAll();}
+    public Iterable<Product> allProducts(){return productService.allProducts();}
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable("id") Integer productId){
-        try {
-            repo.deleteById(productId);
-        }catch (EmptyResultDataAccessException e){
-
-        }
+        productService.deleteProductById(productId);
     }
 
 
