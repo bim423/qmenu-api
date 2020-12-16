@@ -26,6 +26,11 @@ public class SubMenuApiController {
         return subMenuService.addSubMenu(subMenu);
     }
 
+    @PutMapping(consumes = "application/json", path = "/update")
+    public SubMenu updateSubMenu(@RequestBody SubMenu subMenu){
+        return subMenuService.update(subMenu);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteSubmenu(@PathVariable("id") Integer submenuId){
        subMenuService.deleteSubMenuById(submenuId);

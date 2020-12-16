@@ -22,14 +22,14 @@ public class Order {
 
     private State state;
 
-    @ManyToMany(targetEntity = Product.class)
-    private List<Product> products;
+    @ManyToMany(targetEntity = OrderDetail.class)
+    private List<OrderDetail> orderDetails;
 
     @ManyToOne
     @JoinColumn(name = "desk_id")
     private Desk desk;
 
     private static enum State{
-        READY, PREPARING, ERROR
+        PENDING, PREPARING, DELIVERED
     }
 }

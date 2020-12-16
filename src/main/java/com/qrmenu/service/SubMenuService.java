@@ -39,10 +39,35 @@ public class SubMenuService {
     }
 
     public void deleteSubMenuById(Integer id){
+        Optional<Menu> optional = menuRepository.findById(1);
+        if (!optional.isPresent()){
+            try {
+                subMenuRepository.deleteById(id);
+            }catch (EmptyResultDataAccessException e){
+
+            }
+            return;
+        }
+
+        optional.get().getMenu().remove(subMenuRepository.findById(id).get());
         try {
             subMenuRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
 
         }
+    }
+
+    public SubMenu update(SubMenu update) {
+
+        SubMenu subMenu = subMenuRepository.findById(update.getId()).get();
+
+        if (update.getDescription() != null){
+            subMenu.setDescription(update.getDescription());
+        }
+        if (update.getCategory() != null){
+            subMenu.setCategory(update.getCategory());
+        }
+        return subMenuRepository.save(subMenu);
+
     }
 }
