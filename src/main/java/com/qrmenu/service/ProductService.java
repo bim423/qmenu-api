@@ -6,10 +6,10 @@ import com.qrmenu.domain.Product;
 import com.qrmenu.domain.SubMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,11 +25,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product addProduct(Integer submenuId, Product product){
+    public ResponseEntity<Message> addProduct(Product product){
 
-        Optional<SubMenu> subMenuOptional = subMenuRepository.findById(submenuId);
+        Optional<SubMenu> subMenuOptional = subMenuRepository.findById(product.getSubId());
         if (!subMenuOptional.isPresent()){
-            throw new EntityNotFoundException();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Submenu is not valid", 0));
         }
 
         SubMenu subMenu = subMenuOptional.get();
@@ -39,16 +40,19 @@ public class ProductService {
         subMenuRepository.save(subMenu);
         productRepository.save(product);
 
-        return product;
+        return ResponseEntity.status(HttpStatus.OK).body(new Message("Product added successfully", product.getId()));
     }
 
-    public void deleteProductById(Integer productId){
+    public ResponseEntity<Message> deleteProductById(Integer productId){
 
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isPresent()){
             product.get().getSubMenu().getProducts().remove(product.get());
             subMenuRepository.save(product.get().getSubMenu());
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Product is not available", productId));
         }
 
         try {
@@ -56,29 +60,34 @@ public class ProductService {
         }catch (EmptyResultDataAccessException e){
 
         }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Product deleted successfully", productId));
     }
 
-    public Product updateProduct(Integer productId, Product update){
+    public ResponseEntity<Message> updateProduct(Integer productId, Product update){
 
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
         if (!optionalProduct.isPresent()){
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Product is not valid", 0));
         }
 
         Product existingProduct = optionalProduct.get();
 
-        if (update.getName() != null){
-            existingProduct.setName(update.getName());
-        }
-        if (update.getDescription() != null){
-            existingProduct.setDescription(update.getDescription());
-        }
-        if (update.getPrice() != 0.0){
-            existingProduct.setPrice(update.getPrice());
+        if (update.getName() == null || update.getDescription() == null || update.getPrice() == 0.0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("There are empty fields", productId));
         }
 
-        return productRepository.save(existingProduct);
+        existingProduct.setName(update.getName());
+        existingProduct.setDescription(update.getDescription());
+        existingProduct.setPrice(update.getPrice());
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Product updated successfully", productId));
     }
 
 }

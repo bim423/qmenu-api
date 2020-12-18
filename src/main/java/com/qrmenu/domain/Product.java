@@ -1,9 +1,8 @@
 package com.qrmenu.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,6 +23,10 @@ public class Product {
     private String description;
 
     private double price;
+
+    @Transient
+    @JsonInclude
+    private int subId;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
