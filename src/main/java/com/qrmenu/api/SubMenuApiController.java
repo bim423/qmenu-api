@@ -30,8 +30,8 @@ public class SubMenuApiController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubmenu(@PathVariable("id") Integer submenuId){
-       subMenuService.deleteSubMenuById(submenuId);
+    public ResponseEntity<Message> deleteSubmenu(@PathVariable("id") Integer submenuId){
+       return subMenuService.deleteSubMenuById(submenuId);
     }
 
 

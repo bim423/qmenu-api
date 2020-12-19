@@ -22,15 +22,18 @@ public class SubMenuService {
     public ResponseEntity<Message> addSubMenu(SubMenu subMenu){
         subMenuRepository.save(subMenu);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new Message("Category created successfully", subMenu.getId()));
+                .body(new Message("Category is created successfully", subMenu.getId()));
     }
 
-    public void deleteSubMenuById(Integer id){
+    public ResponseEntity<Message> deleteSubMenuById(Integer id){
         try {
             subMenuRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Category id is not valid", id));
         }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Category is deleted successfully", id));
     }
 
     public ResponseEntity<Message> update(SubMenu update) {
