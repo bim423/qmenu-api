@@ -1,12 +1,10 @@
 package com.qrmenu.api;
 
-import com.qrmenu.data.ProductRepository;
-import com.qrmenu.data.SubMenuRepository;
-import com.qrmenu.domain.Product;
 import com.qrmenu.domain.SubMenu;
+import com.qrmenu.service.Message;
 import com.qrmenu.service.SubMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,8 +19,8 @@ public class SubMenuApiController {
     public Iterable<SubMenu> allSubMenu(){return subMenuService.allSubMenus();}
 
 
-    @PutMapping(consumes = "application/json")
-    public SubMenu putSubMenu(@RequestBody SubMenu subMenu){
+    @PutMapping(consumes = "application/json", path = "/create")
+    public ResponseEntity<Message> putSubMenu(@RequestBody SubMenu subMenu){
         return subMenuService.addSubMenu(subMenu);
     }
 
