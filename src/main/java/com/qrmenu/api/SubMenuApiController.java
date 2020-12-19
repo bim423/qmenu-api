@@ -25,7 +25,7 @@ public class SubMenuApiController {
     }
 
     @PutMapping(consumes = "application/json", path = "/update")
-    public SubMenu updateSubMenu(@RequestBody SubMenu subMenu){
+    public ResponseEntity<Message> updateSubMenu(@RequestBody SubMenu subMenu){
         return subMenuService.update(subMenu);
     }
 

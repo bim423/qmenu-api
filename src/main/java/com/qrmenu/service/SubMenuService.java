@@ -33,17 +33,20 @@ public class SubMenuService {
         }
     }
 
-    public SubMenu update(SubMenu update) {
+    public ResponseEntity<Message> update(SubMenu update) {
 
         SubMenu subMenu = subMenuRepository.findById(update.getId()).get();
 
-        if (update.getDescription() != null){
-            subMenu.setDescription(update.getDescription());
+        if (update.getDescription() == null || update.getCategory() == null)  {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Please fill name and description fields", update.getId()));
         }
-        if (update.getCategory() != null){
-            subMenu.setCategory(update.getCategory());
-        }
-        return subMenuRepository.save(subMenu);
+
+        subMenu.setDescription(update.getDescription());
+        subMenu.setCategory(update.getCategory());
+        subMenuRepository.save(subMenu);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Category is updated successfully", update.getId()));
 
     }
 }
