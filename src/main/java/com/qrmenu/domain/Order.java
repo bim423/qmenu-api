@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,22 +15,21 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
 
-    private int quantity;
-    //Type is integer for now
-    private int arrivalTime;
+    private LocalDateTime arrivalTime;
 
-    private State state;
+    private int state;
 
-    @ManyToMany(targetEntity = OrderDetail.class)
-    private List<OrderDetail> orderDetails;
+    @OneToMany(targetEntity = OrderDetail.class, cascade = CascadeType.ALL, mappedBy = "order")
+    private List<OrderDetail> orderedProducts;
 
     @ManyToOne
     @JoinColumn(name = "desk_id")
     private Desk desk;
 
-    private static enum State{
-        PENDING, PREPARING, DELIVERED
+    @PrePersist
+    public void placedAt() {
+        this.arrivalTime = LocalDateTime.now();
     }
 }

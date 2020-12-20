@@ -42,5 +42,4 @@ public class Product {
         this.subMenu = subMenu;
     }
 
-
 }
