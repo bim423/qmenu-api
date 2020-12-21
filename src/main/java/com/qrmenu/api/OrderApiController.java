@@ -29,6 +29,13 @@ public class OrderApiController {
         return null;
     }
 
+    @PutMapping(consumes = "application/json", path = "/state")
+    public ResponseEntity<Message> updateStatus(@RequestBody Order order){
+        return orderService.updateState(order);
+
+    }
+
+
 
 
 

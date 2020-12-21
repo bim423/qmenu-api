@@ -19,7 +19,7 @@ public class Desk {
 
     private String code;
 
-    @OneToMany(targetEntity = Order.class)
+    @OneToMany(targetEntity = Order.class, mappedBy = "desk")
     private List<Order> orders;
 
 

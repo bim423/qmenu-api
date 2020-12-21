@@ -1,13 +1,17 @@
 package com.qrmenu.service;
 
+import com.qrmenu.data.DeskRepository;
 import com.qrmenu.data.OrderDetailRepository;
 import com.qrmenu.data.OrderRepository;
+import com.qrmenu.domain.Desk;
 import com.qrmenu.domain.Order;
 import com.qrmenu.domain.OrderDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -18,6 +22,9 @@ public class OrderService {
     @Autowired
     private OrderDetailRepository detailRepository;
 
+    @Autowired
+    DeskRepository deskRepository;
+
     public Iterable<Order> allOrders(){return orderRepository.findAll();}
 
     public ResponseEntity<Message> placeOrder(Order order){
@@ -26,9 +33,38 @@ public class OrderService {
             orderDetail.setOrder(order);
             detailRepository.save(orderDetail);
         }
+        Optional<Desk> optionalDesk = deskRepository.findById(order.getDeskIdPlace());
+        if (!optionalDesk.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Desk ID is not valid", order.getDeskId()));
+        }
+        Desk desk = optionalDesk.get();
+        desk.getOrders().add(order);
+        order.setDesk(desk);
+
+        deskRepository.save(desk);
         orderRepository.save(order);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new Message("Order is created successfully", order.getId()));
     }
+
+    public ResponseEntity<Message> updateState(Order order){
+        Optional<Order> optionalOrder = orderRepository.findById(order.getId());
+
+        if (!optionalOrder.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Order can not be found", order.getId()));
+        }
+        if (order.getState() > 2){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("State code is not valid", order.getId()));
+        }
+
+        optionalOrder.get().setState(order.getState());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("State is updated successfully", order.getId()));
+    }
+
 }
