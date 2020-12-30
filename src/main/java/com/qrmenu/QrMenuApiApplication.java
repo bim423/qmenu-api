@@ -16,16 +16,4 @@ public class QrMenuApiApplication {
         SpringApplication.run(QrMenuApiApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer configurer(){
-        return new WebMvcConfigurer(){
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/*")
-                    .allowedOrigins("http://localhost:63342")
-                    .allowedMethods("*");
-            }
-        };
-
-    }
 }
