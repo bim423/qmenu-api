@@ -27,7 +27,7 @@ public class DeskApiController {
         return deskService.addDesk(desk);
     }
 
-    @PostMapping(path = "/update/{id]")
+    @PostMapping(path = "/update/{id}")
     public ResponseEntity<DeskMessage> updateDeskCode(@PathVariable("id") Integer id)
             throws NoSuchAlgorithmException {
             return deskService.updateDeskCode(id);

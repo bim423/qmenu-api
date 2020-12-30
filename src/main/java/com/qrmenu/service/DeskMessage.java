@@ -1,5 +1,11 @@
 package com.qrmenu.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class DeskMessage extends Message{
 
     private String deskCode;
@@ -8,4 +14,8 @@ public class DeskMessage extends Message{
         super(message, id);
         this.deskCode = deskCode;
     }
+
+
+
+
 }
