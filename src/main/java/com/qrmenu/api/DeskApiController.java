@@ -38,5 +38,8 @@ public class DeskApiController {
         return deskService.getDeskByCode(code);
     }
 
-
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Message> deleteDesk(@PathVariable("id") Integer id){
+        return deskService.deleteDeskById(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.qrmenu.service;
 import com.qrmenu.data.DeskRepository;
 import com.qrmenu.domain.Desk;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,25 @@ public class DeskService {
         }
 
         return optionalDesk.get();
+    }
+
+    public ResponseEntity<Message> deleteDeskById(Integer id){
+        Optional<Desk> optional = deskRepository.findById(id);
+
+        if (!optional.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Desk ID is not valid", id));
+        }
+
+        try {
+            deskRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Desk deleted successfully", id));
+
+
     }
 }
