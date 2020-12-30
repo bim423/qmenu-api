@@ -24,6 +24,6 @@ public class SubMenu {
     @Column(name = "submenu_description")
     private String description;
 
-    @OneToMany(mappedBy = "subMenu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subMenu", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<Product> products;
 }

@@ -36,6 +36,11 @@ public class OrderApiController {
 
     }
 
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Message> deleteOrder(@PathVariable("id") Integer orderId){
+        return orderService.deleteOrder(orderId);
+    }
+
 
 
 

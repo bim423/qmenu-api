@@ -71,4 +71,9 @@ public class OrderService {
                 .body(new Message("State is updated successfully", order.getId()));
     }
 
+    public ResponseEntity<Message> deleteOrder(Integer orderId) {
+
+
+        return null;
+    }
 }
