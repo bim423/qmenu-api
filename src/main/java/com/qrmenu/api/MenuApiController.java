@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/menu")
+@CrossOrigin("*")
 public class MenuApiController {
 
         private SubMenuRepository repo;

@@ -18,12 +18,13 @@ public class SubMenuApiController {
     @GetMapping(produces = "application/json")
     public Iterable<SubMenu> allSubMenu(){return subMenuService.allSubMenus();}
 
-
+    @CrossOrigin("*")
     @PutMapping(consumes = "application/json", path = "/create")
     public ResponseEntity<Message> putSubMenu(@RequestBody SubMenu subMenu){
         return subMenuService.addSubMenu(subMenu);
     }
 
+    @CrossOrigin("*")
     @PutMapping(consumes = "application/json", path = "/update")
     public ResponseEntity<Message> updateSubMenu(@RequestBody SubMenu subMenu){
         return subMenuService.update(subMenu);
