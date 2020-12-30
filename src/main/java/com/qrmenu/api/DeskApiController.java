@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping(path = "/desk")
+@CrossOrigin("*")
 public class DeskApiController {
 
     @Autowired
