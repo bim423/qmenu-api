@@ -19,7 +19,7 @@ public class OrderApiController {
         return orderService.allOrders();
     }
 
-    @PutMapping(consumes = "application/json", value = "/place")
+    @PutMapping(consumes = "application/json", path = "/place")
     public ResponseEntity<Message> placeOrder(@RequestBody Order order){
         return orderService.placeOrder(order);
     }
