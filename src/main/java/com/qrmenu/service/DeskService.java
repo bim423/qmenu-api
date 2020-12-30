@@ -74,4 +74,15 @@ public class DeskService {
 
 
     }
+
+    public Desk findById(Integer id) {
+
+        Optional<Desk> optional = deskRepository.findById(id);
+
+        if (!optional.isPresent()){
+            return null;
+        }
+
+        return optional.get();
+    }
 }
