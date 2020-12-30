@@ -15,11 +15,14 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private int id;
 
+    @Column(name = "arrival_time")
     private LocalDateTime arrivalTime;
 
+    @Column(name = "state")
     private int state;
 
     @Transient

@@ -9,13 +9,15 @@ import javax.persistence.*;
 @Entity
 @Data
 @RequiredArgsConstructor
+@Table(name = "order_detail")
 public class OrderDetail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="order_detail_id")
     public int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
@@ -23,6 +25,7 @@ public class OrderDetail {
     @JoinColumn(name="order_id", nullable = false)
     private Order order;
 
+    @Column(name = "quantity")
     private int quantity;
 
     @JsonIgnore

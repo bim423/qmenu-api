@@ -29,10 +29,6 @@ public class OrderService {
 
     public ResponseEntity<Message> placeOrder(Order order){
 
-        for (OrderDetail orderDetail: order.getOrderedProducts()) {
-            orderDetail.setOrder(order);
-            detailRepository.save(orderDetail);
-        }
         Optional<Desk> optionalDesk = deskRepository.findById(order.getDeskIdPlace());
         if (!optionalDesk.isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -43,7 +39,15 @@ public class OrderService {
         order.setDesk(desk);
 
         deskRepository.save(desk);
+
+        for (OrderDetail orderDetail: order.getOrderedProducts()) {
+            orderDetail.setOrder(order);
+            detailRepository.save(orderDetail);
+        }
+
+
         orderRepository.save(order);
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new Message("Order is created successfully", order.getId()));
