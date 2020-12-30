@@ -25,7 +25,7 @@ public class DeskApiController {
 
     @CrossOrigin("*")
     @PutMapping(consumes = "application/json")
-    public ResponseEntity<Message> putDesk(@RequestBody Desk desk){
+    public ResponseEntity<DeskMessage> putDesk(@RequestBody Desk desk){
         return deskService.addDesk(desk);
     }
 
@@ -34,6 +34,11 @@ public class DeskApiController {
     public ResponseEntity<DeskMessage> updateDeskCode(@PathVariable("id") Integer id)
             throws NoSuchAlgorithmException {
             return deskService.updateDeskCode(id);
+    }
+
+    @PutMapping(path = "/update")
+    public ResponseEntity<DeskMessage> updateDeskLabel(@RequestBody Desk desk){
+        return deskService.updateDeskLabel(desk);
     }
 
     @CrossOrigin("*")

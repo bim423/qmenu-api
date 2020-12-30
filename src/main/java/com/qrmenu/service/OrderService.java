@@ -7,6 +7,7 @@ import com.qrmenu.domain.Desk;
 import com.qrmenu.domain.Order;
 import com.qrmenu.domain.OrderDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -73,7 +74,19 @@ public class OrderService {
 
     public ResponseEntity<Message> deleteOrder(Integer orderId) {
 
+        Optional<Order> optional = orderRepository.findById(orderId);
 
-        return null;
+        if (!optional.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new Message("Order ID is not valid", orderId));
+        }
+        try {
+            orderRepository.deleteById(orderId);
+        }catch (EmptyResultDataAccessException e){
+
+        }
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Message("Order deleted successfully", orderId));
     }
 }

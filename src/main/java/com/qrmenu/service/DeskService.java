@@ -20,11 +20,11 @@ public class DeskService {
 
     public Iterable<Desk> allDesks(){return deskRepository.findAll();}
 
-    public ResponseEntity<Message> addDesk(Desk desk){
+    public ResponseEntity<DeskMessage> addDesk(Desk desk){
         deskRepository.save(desk);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Message("Desk added successfully", desk.getId()));
+                .body(new DeskMessage("Desk added successfully", desk.getId(), desk.getCode()));
     }
 
     public ResponseEntity<DeskMessage> updateDeskCode(Integer id) throws NoSuchAlgorithmException {
@@ -84,5 +84,27 @@ public class DeskService {
         }
 
         return optional.get();
+    }
+
+    public ResponseEntity<DeskMessage> updateDeskLabel(Desk desk) {
+
+        Optional<Desk> optional = deskRepository.findById(desk.getId());
+
+        if (!optional.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new DeskMessage("Desk ID is not valid", desk.getId(), null));
+        }
+
+        Desk existDesk = optional.get();
+
+        if (desk.getLabel() != null){
+            existDesk.setLabel(desk.getLabel());
+        }
+
+        deskRepository.save(existDesk);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new DeskMessage("Desk label is updated successfully",
+                        existDesk.getId(), existDesk.getCode()));
     }
 }
