@@ -28,6 +28,9 @@ public class OrderDetail {
     @Column(name = "quantity")
     private int quantity;
 
+    @Transient
+    private int productId;
+
     @JsonIgnore
     public int getId() {
         return id;
@@ -40,5 +43,24 @@ public class OrderDetail {
     @JsonIgnore
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+
+    public int getProductId() {
+        return product.getId();
+    }
+
+    @JsonIgnore
+    public Product getProduct() {
+        return product;
+    }
+    @JsonIgnore
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @JsonIgnore
+    public int getProductIdPlace() {
+        return productId;
     }
 }

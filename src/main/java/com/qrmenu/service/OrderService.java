@@ -3,9 +3,11 @@ package com.qrmenu.service;
 import com.qrmenu.data.DeskRepository;
 import com.qrmenu.data.OrderDetailRepository;
 import com.qrmenu.data.OrderRepository;
+import com.qrmenu.data.ProductRepository;
 import com.qrmenu.domain.Desk;
 import com.qrmenu.domain.Order;
 import com.qrmenu.domain.OrderDetail;
+import com.qrmenu.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class OrderService {
     @Autowired
     DeskRepository deskRepository;
 
+    @Autowired
+    ProductRepository productRepository;
+
     public Iterable<Order> allOrders(){return orderRepository.findAll();}
 
     public ResponseEntity<Message> placeOrder(Order order){
@@ -43,6 +48,10 @@ public class OrderService {
 
         for (OrderDetail orderDetail: order.getOrderedProducts()) {
             orderDetail.setOrder(order);
+            Optional<Product> optional = productRepository.findById(orderDetail.getProductIdPlace());
+            if (optional.isPresent()){
+                orderDetail.setProduct(optional.get());
+            }
             detailRepository.save(orderDetail);
         }
 
