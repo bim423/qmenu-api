@@ -21,7 +21,7 @@ public class OrderDetail {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name="order_id", nullable = false)
     private Order order;
 
@@ -30,6 +30,7 @@ public class OrderDetail {
 
     @Transient
     private int productId;
+
 
     @JsonIgnore
     public int getId() {
@@ -48,6 +49,11 @@ public class OrderDetail {
 
     public int getProductId() {
         return product.getId();
+    }
+
+
+    public String getProductName(){
+        return this.product.getName();
     }
 
     @JsonIgnore

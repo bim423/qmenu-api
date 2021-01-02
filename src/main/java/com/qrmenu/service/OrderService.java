@@ -46,18 +46,16 @@ public class OrderService {
 
         deskRepository.save(desk);
 
+
         for (OrderDetail orderDetail: order.getOrderedProducts()) {
             orderDetail.setOrder(order);
             Optional<Product> optional = productRepository.findById(orderDetail.getProductIdPlace());
             if (optional.isPresent()){
                 orderDetail.setProduct(optional.get());
             }
-            detailRepository.save(orderDetail);
         }
 
-
         orderRepository.save(order);
-
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new Message("Order is created successfully", order.getId()));
