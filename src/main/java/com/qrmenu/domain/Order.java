@@ -35,6 +35,10 @@ public class Order {
     @JoinColumn(name = "desk_id")
     private Desk desk;
 
+    public String getDeskLabel(){
+        return desk.getLabel();
+    }
+
     @PrePersist
     public void placedAt() {
         this.arrivalTime = LocalDateTime.now();
@@ -43,6 +47,9 @@ public class Order {
     public int getDeskId() {
         return desk.getId();
     }
+
+
+
 
     @JsonIgnore
     public int getDeskIdPlace(){
