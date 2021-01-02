@@ -75,6 +75,8 @@ public class OrderService {
 
         optionalOrder.get().setState(order.getState());
 
+        orderRepository.save(optionalOrder.get());
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Message("State is updated successfully", order.getId()));
     }

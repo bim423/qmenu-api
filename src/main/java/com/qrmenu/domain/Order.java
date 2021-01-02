@@ -48,9 +48,6 @@ public class Order {
         return desk.getId();
     }
 
-
-
-
     @JsonIgnore
     public int getDeskIdPlace(){
         return deskId;
