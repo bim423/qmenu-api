@@ -31,7 +31,7 @@ public class OrderService {
     @Autowired
     ProductRepository productRepository;
 
-    public Iterable<Order> allOrders(){return orderRepository.findAll();}
+    public Iterable<Order> allOrders(){return orderRepository.findAllByOrderByIdDesc();}
 
     public ResponseEntity<Message> placeOrder(Order order){
 

@@ -40,8 +40,8 @@ public class PersonnelApiController {
         if (patch.getLastName() != null){
             personnel.setLastName(patch.getLastName());
         }
-        if (patch.getRole() != 0){
-            personnel.setRole(patch.getRole());
+        if (patch.getAdmin() != 0){
+            personnel.setAdmin(patch.getAdmin());
         }
         if (patch.getUsername() != null){
             personnel.setUsername(patch.getUsername());
