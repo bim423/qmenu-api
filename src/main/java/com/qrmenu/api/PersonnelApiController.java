@@ -2,50 +2,41 @@ package com.qrmenu.api;
 
 import com.qrmenu.data.PersonnelRepository;
 import com.qrmenu.domain.Personnel;
+import com.qrmenu.service.Message;
+import com.qrmenu.service.PersonnelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/personnel",
-        produces="application/json")
+@RequestMapping(path="/personnel")
 @CrossOrigin("*")
 public class PersonnelApiController {
 
-    private PersonnelRepository repo;
-
     @Autowired
-    public PersonnelApiController(PersonnelRepository repo){this.repo = repo;}
+    private PersonnelService personnelService;
 
     @GetMapping(produces = "application/json")
-    public Iterable<Personnel> allPersonnel(){return repo.findAll();}
+    public Iterable<Personnel> allPersonnel(){return personnelService.getPersonnel();}
 
-    @PostMapping(consumes = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Personnel postPersonnel(@RequestBody Personnel personnel){return  repo.save(personnel);}
-
-    @PutMapping(path = "/{personnelId}", consumes = "application/json")
-    public Personnel putPersonnel(@RequestBody Personnel personnel){return repo.save(personnel);}
-
-    @PatchMapping(path = "/personnelId", consumes = "application/json")
-    public Personnel patchPersonnel(@PathVariable("personnelId") Integer personnelId,
-                                    @RequestBody Personnel patch){
-        Personnel personnel = repo.findById(personnelId).get();
-        if (patch.getEmail() != null){
-            personnel.setEmail(patch.getEmail());
-        }
-        if (patch.getFirstName() != null){
-            personnel.setFirstName(patch.getFirstName());
-        }
-        if (patch.getLastName() != null){
-            personnel.setLastName(patch.getLastName());
-        }
-        if (patch.getAdmin() != 0){
-            personnel.setAdmin(patch.getAdmin());
-        }
-        if (patch.getUsername() != null){
-            personnel.setUsername(patch.getUsername());
-        }
-        return repo.save(personnel);
+    @PutMapping(consumes = "application/json", path = "/create")
+    public ResponseEntity<Message> addPersonnel(@RequestBody Personnel personnel){
+        System.out.println(personnel.getId());
+        System.out.println(personnel.getUsername());
+        return personnelService.addPersonnel(personnel);
     }
+
+    @PutMapping(consumes = "application/json", path = "/update")
+    public ResponseEntity<Message> updatePersonnel(@RequestBody Personnel personnel){
+        return personnelService.updatePersonnel(personnel);
+    }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Message> deletePersonnel(@PathVariable("id") Integer pid){
+        return personnelService.deletePersonnel(pid);
+
+    }
+
+
 }
