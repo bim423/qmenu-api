@@ -17,7 +17,7 @@ public class PersonnelService {
     PersonnelRepository personnelRepo;
 
     public Iterable<Personnel> getPersonnel(){
-        return personnelRepo.findAll();
+        return personnelRepo.findAllByOrderByIdAsc();
     }
 
     public ResponseEntity<Message> addPersonnel(Personnel personnel){

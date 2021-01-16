@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface PersonnelRepository extends CrudRepository<Personnel, Integer> {
 
     Optional<Personnel> findByUsername(String username);
+
+    Iterable<Personnel> findAllByOrderByIdAsc();
 }
